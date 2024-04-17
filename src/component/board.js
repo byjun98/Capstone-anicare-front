@@ -13,14 +13,15 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera,faAngleLeft ,faHouse} from "@fortawesome/free-solid-svg-icons";
-function Map(props) {
+function Board(props) {
     const navigate = useNavigate();
     const [isScrolled, setIsScrolled] = useState(false);
     let [filtershop, setFilterShop] = useState([]);
     let [search, setSearch] = useState("");
-    const [mainlist, Setmainlist] = useState(["지도"]); // 상태를 배열로 초기화
+    const [mainlist, Setmainlist] = useState(["게시판"]); // 상태를 배열로 초기화
 
-  
+    
+
     return (
         <div className="Mainpage">
             <div className={`MainTopNav ${isScrolled ? 'hidden' : ''}`}>
@@ -80,4 +81,4 @@ function Map(props) {
 
     )
 };
-export default Map;
+export default Board;
