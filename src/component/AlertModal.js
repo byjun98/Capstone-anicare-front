@@ -3,9 +3,8 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Box, Card, CardContent, Typography, Avatar, Stack, TextField, Button, List, ListItem, ListItemText, ListItemAvatar, IconButton } from '@mui/material';
 import { Delete as DeleteIcon } from '@mui/icons-material';
-import { AuthContext } from '../context/AuthContext';
-import CommentModal from '../commentmodal';
-import { request } from '../request';
+import { AuthContext } from './context/AuthContext';
+import CommentModal from './commentmodal';
 
 function VocView() {
   const { vocId } = useParams();
@@ -45,8 +44,12 @@ function VocView() {
   const handleAddComment = async () => {
     if (!newComment) return;
     try {
-      const response = await request(`http://3.38.225.120:8080/api/comment/${vocId}`, 'POST', { contents: newComment }, userToken);
-      setComments([...comments, response]);
+      const response = await axios.post(`http://3.38.225.120:8080/api/comment/${vocId}`, { content: newComment }, {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        }
+      });
+      setComments([...comments, response.data.response]);
       setNewComment('');
     } catch (error) {
       console.error("Error adding the comment:", error);
@@ -65,7 +68,7 @@ function VocView() {
 
   return (
     <Box sx={{ width: '100%', maxWidth: 600, margin: 'auto', mt: 4 }}>
-      <Card sx={{ height: '60vh', overflow: 'auto' }}>
+      <Card sx={{ height: '40vh', overflow: 'auto' }}>
         <CardContent>
           <Stack direction="row" spacing={2} alignItems="center" mb={2}>
             <Avatar src="/static/images/avatar/1.jpg" alt="Profile Picture" />
@@ -94,7 +97,7 @@ function VocView() {
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
         />
-        <Button variant="contained" color="error" onClick={handleAddComment}>
+        <Button variant="contained" color="primary" onClick={handleAddComment}>
           댓글 작성
         </Button>
         <List>
@@ -120,9 +123,8 @@ function VocView() {
           commentId={selectedCommentId}
           commentList={comments}
           postId={vocId}
-          commentAuthor={comments.find((comment) => comment.id === selectedCommentId)?.author}
+          commentAuthor={userAccountname}
           setCommentList={setComments}
-          setCommentCnt={(cnt) => setComments((prev) => ({ ...prev, length: cnt }))}
         />
       )}
     </Box>
