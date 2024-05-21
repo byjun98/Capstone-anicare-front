@@ -69,7 +69,7 @@ const Chatbot = ({ initialMessage }) => {
 
   return (
     <Box sx={{ p: 2, maxWidth: 600, mx: 'auto', margintop: "50px" }}>
-      <Paper style={{ maxHeight: 600, overflow: 'auto' }}>
+      <Paper style={{ maxHeight: 500, overflow: 'auto' }}>
         {messages.map((msg, index) => (
           <Box key={index} sx={{ margin: 1, textAlign: msg.sender === 'user' ? 'right' : 'left' }}>
             <Paper elevation={3} sx={{ display: 'inline-block', padding: 2 }}>
