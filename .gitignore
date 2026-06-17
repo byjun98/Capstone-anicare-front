@@ -21,3 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# secrets / env files (do NOT commit) — added during security cleanup
+.env
+*.env
+src/component/Chatbot.env

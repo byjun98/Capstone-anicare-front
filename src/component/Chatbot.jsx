@@ -8,8 +8,11 @@ const Chatbot = ({ initialMessage }) => {
   const [loading, setLoading] = useState(false);
   const hasSentInitialMessageRef = useRef(false); // Ref 사용하여 중복 방지
 
-  const apiKey = '***REDACTED_OPENAI_KEY***';
-  const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
+  // ⚠️ 보안: OpenAI API 키를 프론트엔드(코드/환경변수)에 절대 두지 않는다.
+  //   - CRA는 REACT_APP_* 값을 빌드 시 번들에 그대로 인라인하므로 브라우저에 노출된다.
+  //   - 따라서 키는 백엔드 서버 환경변수에 보관하고, 프론트는 백엔드 프록시만 호출한다.
+  //   - 백엔드(/api/chat)가 요청을 받아 서버에 보관된 OpenAI 키로 호출을 대행하도록 구현할 것.
+  const apiEndpoint = process.env.REACT_APP_CHAT_API_URL || '/api/chat';
 
   const persona = "당신은 강아지 전문가 애케플입니다. 유머가 넘치고 친절한 성격의 챗봇입니다. 재치 있는 농담을 좋아하며 항상 즐겁게 대화합니다.";
 
@@ -29,7 +32,7 @@ const Chatbot = ({ initialMessage }) => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`,
+          // Authorization 헤더(OpenAI 키)는 백엔드 프록시가 서버 측에서 부착한다.
         },
         body: JSON.stringify({
           model: 'gpt-4o',
